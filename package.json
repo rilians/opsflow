@@ -1,0 +1,55 @@
+{
+  "name": "opsflow",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "test:smoke": "node scripts/smoke.cjs",
+    "test:e2e": "node scripts/e2e.cjs",
+    "test:e2e:extended": "node scripts/e2e-extended.cjs",
+    "test:qa": "node scripts/qa.cjs",
+    "test:readme-shots": "node scripts/readme-shots.cjs",
+    "case:export": "node scripts/business-case/export-state.cjs",
+    "case:charts": "python3 scripts/business-case/charts.py",
+    "case:build": "python3 scripts/business-case/build_report.py",
+    "case:all": "npm run case:export && npm run case:charts && npm run case:build",
+    "test:a11y": "node scripts/a11y.cjs",
+    "test:filters": "node scripts/filters.cjs",
+    "test:demo": "node scripts/demo-idempotency.cjs",
+    "verify": "npm run lint && npx tsc -b --noEmit && node scripts/smoke.cjs && node scripts/integrity.cjs && node scripts/e2e.cjs && node scripts/e2e-extended.cjs && node scripts/a11y.cjs && node scripts/filters.cjs && node scripts/demo-idempotency.cjs && node scripts/roi-migration.cjs && node scripts/codes.cjs && node scripts/qa.cjs",
+    "test:codes": "node scripts/codes.cjs",
+    "test:prod": "node scripts/prod-check.cjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.4.0",
+    "lucide-react": "^1.66.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5",
+    "recharts": "^2.15.4",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "autoprefixer": "^10.6.2",
+    "oxlint": "^1.89.0",
+    "playwright": "^1.64.1",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~7.0.2",
+    "vite": "^8.3.5"
+  },
+  "description": "OpsFlow \u2014 Intelligent BAU Automation & Control Tower (standalone demo)",
+  "engines": {
+    "node": ">=20"
+  }
+}

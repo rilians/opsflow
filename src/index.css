@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --ring: 5 150 105;
+  }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-canvas text-ink-800 antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+  }
+  /* Optical sizing for headings: tighter tracking as size increases. */
+  h1,
+  h2,
+  h3 {
+    @apply text-ink-900;
+    letter-spacing: -0.018em;
+  }
+  ::selection {
+    @apply bg-brand-200/70 text-ink-900;
+  }
+  /* Scrollbars — thin, neutral, only visible against content. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #d0d5dd transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: #d0d5dd;
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #98a2b3;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500/45 ring-offset-2 ring-offset-white;
+  }
+}
+
+@layer components {
+  @layer utilities {
+    .grid > *,
+    .flex > * {
+      min-width: 0;
+    }
+    .card {
+      @apply min-w-0 rounded-xl border border-ink-200/90 bg-white shadow-card;
+    }
+    /* Section-level surface: used for page bands that group cards. */
+    .panel {
+      @apply min-w-0 rounded-2xl border border-ink-200/80 bg-white/70 p-3 shadow-card sm:p-4;
+    }
+  /* ---------------------------------------------------------------------------
+     Accessibility
+     Rows and cards that are clickable are given tabindex/role in the markup; this
+     makes the keyboard state visible without adding a second visual language.
+     --------------------------------------------------------------------------- */
+  [data-row-interactive] {
+    cursor: pointer;
+  }
+  [data-row-interactive]:focus-visible {
+    outline: 2px solid rgb(var(--ring) / 0.55);
+    outline-offset: -2px;
+    border-radius: 6px;
+  }
+  /* Respect the OS "reduce motion" preference: keep state changes, drop the travel. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  }
+
+  .card-pad {
+    @apply p-4 sm:p-5;
+  }
+  .card-hover {
+    @apply transition-[box-shadow,border-color,transform] duration-200 ease-smooth hover:-translate-y-px hover:border-ink-300 hover:shadow-raised;
+  }
+  .label {
+    @apply mb-1.5 block text-[12px] font-medium text-ink-600;
+  }
+  .input {
+    @apply w-full rounded-lg border border-ink-300 bg-white px-2.5 py-1.5 text-[13px] text-ink-800 shadow-xs transition-[border-color,box-shadow] duration-150 placeholder:text-ink-400 hover:border-ink-400/80 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/15 disabled:cursor-not-allowed disabled:bg-ink-50 disabled:text-ink-500;
+  }
+  /* Table primitives — one definition, so every table in the app lines up. */
+  .th {
+    @apply whitespace-nowrap px-3 py-2 text-left text-[10.5px] font-semibold uppercase tracking-[0.055em] text-ink-500;
+  }
+  .td {
+    @apply px-3 py-2.5 align-middle text-[12.5px] text-ink-700;
+  }
+  .table-zebra tbody tr:nth-child(even) {
+    @apply bg-ink-50/40;
+  }
+  .row-hover {
+    @apply transition-colors duration-100 hover:bg-brand-50/40;
+  }
+  .scroll-thin {
+    scrollbar-width: thin;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(148, 163, 184, 0.10) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148, 163, 184, 0.10) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  /* Micro label used above figures and in dense headers. */
+  .eyebrow {
+    @apply text-[10px] font-semibold uppercase tracking-[0.09em] text-ink-400;
+  }
+  .figure {
+    @apply tabular text-ink-900;
+    letter-spacing: -0.02em;
+  }
+  /* Focus ring for interactive rows without a visible button. */
+  .focus-row:focus-visible {
+    @apply outline-none ring-2 ring-brand-500/40 ring-inset;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .mask-fade-r {
+    mask-image: linear-gradient(to right, black 88%, transparent 100%);
+  }
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  }
+}
+
+/* Recharts polish — quiet axes, hairline grid, no default focus outline. */
+.recharts-cartesian-axis-tick text {
+  font-size: 10.5px;
+  fill: #667085;
+  font-variant-numeric: tabular-nums;
+}
+.recharts-cartesian-axis-line,
+.recharts-cartesian-axis-tick-line {
+  display: none;
+}
+.recharts-cartesian-grid line {
+  stroke: #eaecf0;
+}
+.recharts-default-tooltip {
+  border-radius: 10px !important;
+}
+.recharts-surface:focus {
+  outline: none;
+}
+.recharts-legend-item-text {
+  color: #667085 !important;
+  font-size: 11px;
+}
+
+/* ---------------------------------------------------------------- print
+   The Report Center offers "Print" as its PDF path. Without these rules the
+   browser printed the whole application shell — sidebar, topbar, toasts and the
+   backdrop of whatever drawer was open — and clipped the report itself. */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  /* Hide everything that is chrome rather than content. */
+  aside,
+  header,
+  footer,
+  [role="status"],
+  .no-print {
+    display: none !important;
+  }
+
+  /* Neutralise overlay positioning so the open drawer prints as a document. */
+  body {
+    background: #fff !important;
+  }
+  .fixed {
+    position: static !important;
+    inset: auto !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    z-index: auto !important;
+  }
+  .fixed.inset-0 {
+    display: none !important;
+  }
+
+  /* Expand scroll containers so nothing is cropped. */
+  .max-h-\[420px\],
+  .max-h-\[330px\],
+  .max-h-\[340px\],
+  .max-h-\[360px\],
+  .overflow-y-auto,
+  .overflow-x-auto {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .card,
+  .shadow-card,
+  .shadow-pop {
+    box-shadow: none !important;
+  }
+
+  /* Keep report blocks from splitting awkwardly across pages. */
+  table {
+    page-break-inside: auto;
+  }
+  tr,
+  li {
+    page-break-inside: avoid;
+  }
+}
